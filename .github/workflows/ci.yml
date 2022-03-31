@@ -26,4 +26,5 @@ jobs:
           mkdir -p /sys/module/kvm/parameters/
           touch /sys/module/kvm/parameters/ignore_msrs
           echo 1 | sudo tee /sys/module/kvm/parameters/ignore_msrs
+          sudo chmod 666 /dev/kvm
           sudo modprobe kvm
