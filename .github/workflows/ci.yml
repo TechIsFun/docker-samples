@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: '*'
+  pull_request:
+    branches: '*'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install prerequisites
+        run: sudo apt install -y qemu qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virt-manager libguestfs
+        
+      - name: enable libvirt and load the KVM kernel module
+        run: |
+          sudo systemctl enable --now libvirtd
+          sudo systemctl enable --now virtlogd
+          echo 1 | sudo tee /sys/module/kvm/parameters/ignore_msrs
+          sudo modprobe kvm
